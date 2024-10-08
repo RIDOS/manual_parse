@@ -23,17 +23,17 @@ func TestMain(t *testing.T) {
 		},
 		{
 			arg:      "-5",
-			output:   "Must specify a number greater than 0\nUsage: ./main <integer> [-h|--help]\nA greeter application which prints the name you entered\n<integer> number of times.\n",
+			output:   "Must specify a number greater than 0\nUsage: ./console-prog <integer> [-h|--help]\nA greeter application which prints the name you entered\n<integer> number of times.\n",
 			exitCode: 1,
 		},
 		{
 			arg:      "-h",
-			output:   "Must specify a number greater than 0\nUsage: ./main <integer> [-h|--help]\nA greeter application which prints the name you entered\n<integer> number of times.\n",
+			output:   "Must specify a number greater than 0\nUsage: ./console-prog <integer> [-h|--help]\nA greeter application which prints the name you entered\n<integer> number of times.\n",
 			exitCode: 1,
 		},
 		{
 			arg:      "--help",
-			output:   "Must specify a number greater than 0\nUsage: ./main <integer> [-h|--help]\nA greeter application which prints the name you entered\n<integer> number of times.\n",
+			output:   "Must specify a number greater than 0\nUsage: ./console-prog <integer> [-h|--help]\nA greeter application which prints the name you entered\n<integer> number of times.\n",
 			exitCode: 1,
 		},
 	}
