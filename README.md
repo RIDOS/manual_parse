@@ -7,3 +7,6 @@ This is a test script written in Golang version 1.23. This script allows display
 ```bash
 go run main.go [1..10]
 ```
+
+## Links
+https://github.com/practicalgo/code
