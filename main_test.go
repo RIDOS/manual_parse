@@ -39,7 +39,7 @@ func TestMain(t *testing.T) {
 	}
 
 	for _, tc := range test {
-		cmd := exec.Command("./main", tc.arg)
+		cmd := exec.Command("./console-prog", tc.arg)
 		cmd.Stdin = strings.NewReader(tc.name)
 
 		var out bytes.Buffer
