@@ -28,17 +28,17 @@ func TestMain(t *testing.T) {
 		},
 		{
 			arg:      []string{"-h", ""},
-			output:   "Usage of greeter:\n  -n int\n    \tNumber of times to greet\n  -o string\n    \tHTML file path\nflag: help requested\n",
+			output:   "Usage of greeter:\n  -n int\n    \tNumber of times to greet\n  -o string\n    \tFolder path for your HTML file\nflag: help requested\n",
 			exitCode: 1,
 		},
 		{
 			arg:      []string{"--help", ""},
-			output:   "Usage of greeter:\n  -n int\n    \tNumber of times to greet\n  -o string\n    \tHTML file path\nflag: help requested\n",
+			output:   "Usage of greeter:\n  -n int\n    \tNumber of times to greet\n  -o string\n    \tFolder path for your HTML file\nflag: help requested\n",
 			exitCode: 1,
 		},
 		{
 			arg:      []string{"-h", "-n"},
-			output:   "Usage of greeter:\n  -n int\n    \tNumber of times to greet\n  -o string\n    \tHTML file path\nflag: help requested\n",
+			output:   "Usage of greeter:\n  -n int\n    \tNumber of times to greet\n  -o string\n    \tFolder path for your HTML file\nflag: help requested\n",
 			exitCode: 1,
 		},
 	}
