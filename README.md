@@ -4,8 +4,14 @@
 This is a test script written in Golang version 1.23. This script allows displaying the user's name via a flag.
 
 ## How it works
+Build your app:
 ```bash
-go run main.go [1..10]
+go build main.go -o manual_parse
+```
+
+Run your app:
+```bash
+./manual_parse --help
 ```
 
 ## How to test it

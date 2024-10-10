@@ -5,16 +5,18 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"html/template"
 	"io"
 	"os"
 )
 
 type config struct {
 	numTimes int
+	filePath string
 }
 
 func validateArgs(c config) error {
-	if !(c.numTimes > 0) {
+	if !(c.numTimes > 0) && c.filePath == "" {
 		return errors.New("Must specify a number greater than 0")
 	}
 	return nil
@@ -26,6 +28,7 @@ func parseArgs(w io.Writer, args []string) (config, error) {
 
 	fs.SetOutput(w)
 	fs.IntVar(&c.numTimes, "n", 0, "Number of times to greet")
+	fs.StringVar(&c.filePath, "o", "", "Folder path for your HTML file")
 
 	err := fs.Parse(args)
 	if err != nil {
@@ -57,6 +60,9 @@ func runCmd(r io.Reader, w io.Writer, c config) error {
 		return err
 	}
 	greetUser(c, name, w)
+	if c.filePath != "" {
+		createTemplate(c, name)
+	}
 	return nil
 }
 
@@ -65,6 +71,20 @@ func greetUser(c config, name string, w io.Writer) {
 	for i := 0; i < c.numTimes; i++ {
 		fmt.Fprintf(w, msg)
 	}
+}
+
+func createTemplate(c config, name string) {
+	file, err := os.Create(c.filePath + "index.html")
+	if err != nil {
+		fmt.Printf("Can`t create file from path: %v\n", c.filePath)
+		os.Exit(1)
+	}
+	tmpl, err := template.New("name").Parse("<h1>Hello {{ .}}!</h1>")
+	if err != nil {
+		fmt.Printf("Can`t implode name in file.")
+		os.Exit(1)
+	}
+	tmpl.Execute(file, name)
 }
 
 func main() {
