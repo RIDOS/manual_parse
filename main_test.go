@@ -10,36 +10,41 @@ import (
 // info: Build this before start
 func TestMain(t *testing.T) {
 	test := []struct {
-		arg      string
+		arg      []string
 		name     string
 		output   string
 		exitCode int
 	}{
 		{
-			arg:      "5",
+			arg:      []string{"-n", "5"},
 			name:     "a.imaev",
 			output:   "Your name please? Press the Enter key when done.\n" + strings.Repeat("Nite to meet you a.imaev\n", 5),
 			exitCode: 0,
 		},
 		{
-			arg:      "-5",
-			output:   "Must specify a number greater than 0\nUsage: ./console-prog <integer> [-h|--help]\nA greeter application which prints the name you entered\n<integer> number of times.\n",
+			arg:      []string{"-n", "-5"},
+			output:   "Must specify a number greater than 0\n",
 			exitCode: 1,
 		},
 		{
-			arg:      "-h",
-			output:   "Must specify a number greater than 0\nUsage: ./console-prog <integer> [-h|--help]\nA greeter application which prints the name you entered\n<integer> number of times.\n",
+			arg:      []string{"-h", ""},
+			output:   "Usage of greeter:\n  -n int\n    \tNumber of times to greet\nflag: help requested\n",
 			exitCode: 1,
 		},
 		{
-			arg:      "--help",
-			output:   "Must specify a number greater than 0\nUsage: ./console-prog <integer> [-h|--help]\nA greeter application which prints the name you entered\n<integer> number of times.\n",
+			arg:      []string{"--help", ""},
+			output:   "Usage of greeter:\n  -n int\n    \tNumber of times to greet\nflag: help requested\n",
+			exitCode: 1,
+		},
+		{
+			arg:      []string{"-h", "-n"},
+			output:   "Usage of greeter:\n  -n int\n    \tNumber of times to greet\nflag: help requested\n",
 			exitCode: 1,
 		},
 	}
 
 	for _, tc := range test {
-		cmd := exec.Command("./console-prog", tc.arg)
+		cmd := exec.Command("./console-prog", tc.arg...)
 		cmd.Stdin = strings.NewReader(tc.name)
 
 		var out bytes.Buffer
@@ -49,7 +54,7 @@ func TestMain(t *testing.T) {
 
 		gotMsg := out.String()
 		if gotMsg != tc.output {
-			t.Errorf("Expected stdout message to b: \n%v, Got \n%v\n", gotMsg, tc.output)
+			t.Errorf("Expected stdout message to b: \n%v, Got \n%v\n", tc.output, gotMsg)
 		}
 		out.Reset()
 
