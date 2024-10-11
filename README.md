@@ -14,6 +14,50 @@ Run your app:
 ./manual_parse --help
 ```
 
+## Commands
+
+### Flag h
+
+If you run app with flag `-h` or `--help`:
+```bash
+Usage of greeter:
+  -n int                                                           Number of times to greet
+  -o string
+        Folder path for your HTML file
+```
+
+### Flag n
+
+Flag `-n` can write on console "Nice to meet you `<user_name>`. Example:
+```bash
+➜  manual_parse git:(main) ✗ ./main -n 10
+Your name please? Press the Enter key when done.
+Richard
+Nite to meet you Richard
+Nite to meet you Richard
+Nite to meet you Richard
+Nite to meet you Richard
+Nite to meet you Richard
+Nite to meet you Richard
+Nite to meet you Richard
+Nite to meet you Richard
+Nite to meet you Richard
+Nite to meet you Richard
+```
+
+### Flag o
+
+Flag `-o` can create `html` file. Example:
+```bash
+➜  manual_parse git:(main) ✗ ./main -o ./
+Your name please? Press the Enter key when done.
+Richard
+```
+In output - create file with:
+```html
+<h1>Hello Richard!</h1>
+```
+
 ## How to test it
 
 ```bash
