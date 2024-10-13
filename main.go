@@ -35,6 +35,10 @@ func parseArgs(w io.Writer, args []string) (config, error) {
 		return c, err
 	}
 
+	if fs.NArg() != 0 {
+		return c, errPosArgSpecified
+	}
+
 	return c, nil
 }
 
@@ -87,10 +91,14 @@ func createTemplate(c config, name string) {
 	tmpl.Execute(file, name)
 }
 
+var errPosArgSpecified = errors.New("Positional arguments specified")
+
 func main() {
 	c, err := parseArgs(os.Stdout, os.Args[1:])
 	if err != nil {
-		fmt.Fprintln(os.Stdout, err)
+		if errors.Is(err, errPosArgSpecified) {
+			fmt.Fprintln(os.Stdout, err)
+		}
 		os.Exit(1)
 	}
 	err = validateArgs(c)
