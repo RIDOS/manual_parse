@@ -22,23 +22,33 @@ func TestMain(t *testing.T) {
 			exitCode: 0,
 		},
 		{
+			arg:      []string{"-n", "5", "Richard"},
+			output:   strings.Repeat("Nite to meet you Richard\n", 5),
+			exitCode: 0,
+		},
+		{
+			arg:      []string{"-n", "abc", "Richard"},
+			output:   "invalid value \"abc\" for flag -n: parse error\n\nA greeter application whitch prints the name you entered a specified number of times.\n\nUsage of greeter: <option> [name]\n\nOptions: \n  -n int\n    \tNumber of times to greet\n  -o string\n    \tFolder path for your HTML file\n",
+			exitCode: 1,
+		},
+		{
 			arg:      []string{"-n", "-5"},
 			output:   "Must specify a number greater than 0\n",
 			exitCode: 1,
 		},
 		{
 			arg:      []string{"-h", ""},
-			output:   "Usage of greeter:\n  -n int\n    \tNumber of times to greet\n  -o string\n    \tFolder path for your HTML file\n",
+			output:   "\nA greeter application whitch prints the name you entered a specified number of times.\n\nUsage of greeter: <option> [name]\n\nOptions: \n  -n int\n    \tNumber of times to greet\n  -o string\n    \tFolder path for your HTML file\n",
 			exitCode: 1,
 		},
 		{
 			arg:      []string{"--help", ""},
-			output:   "Usage of greeter:\n  -n int\n    \tNumber of times to greet\n  -o string\n    \tFolder path for your HTML file\n",
+			output:   "\nA greeter application whitch prints the name you entered a specified number of times.\n\nUsage of greeter: <option> [name]\n\nOptions: \n  -n int\n    \tNumber of times to greet\n  -o string\n    \tFolder path for your HTML file\n",
 			exitCode: 1,
 		},
 		{
 			arg:      []string{"-h", "-n"},
-			output:   "Usage of greeter:\n  -n int\n    \tNumber of times to greet\n  -o string\n    \tFolder path for your HTML file\n",
+			output:   "\nA greeter application whitch prints the name you entered a specified number of times.\n\nUsage of greeter: <option> [name]\n\nOptions: \n  -n int\n    \tNumber of times to greet\n  -o string\n    \tFolder path for your HTML file\n",
 			exitCode: 1,
 		},
 	}
