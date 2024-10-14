@@ -20,8 +20,13 @@ Run your app:
 
 If you run app with flag `-h` or `--help`:
 ```bash
-Usage of greeter:
-  -n int                                                           Number of times to greet
+A greeter application whitch prints the name you entered a specified number of times.
+
+Usage of greeter: <option> [name]
+
+Options: 
+  -n int
+        Number of times to greet
   -o string
         Folder path for your HTML file
 ```
@@ -30,16 +35,7 @@ Usage of greeter:
 
 Flag `-n` can write on console "Nice to meet you `<user_name>`. Example:
 ```bash
-➜  manual_parse git:(main) ✗ ./main -n 10
-Your name please? Press the Enter key when done.
-Richard
-Nite to meet you Richard
-Nite to meet you Richard
-Nite to meet you Richard
-Nite to meet you Richard
-Nite to meet you Richard
-Nite to meet you Richard
-Nite to meet you Richard
+> ./console-prog -n 3 "Richard"
 Nite to meet you Richard
 Nite to meet you Richard
 Nite to meet you Richard

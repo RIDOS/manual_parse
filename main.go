@@ -12,6 +12,7 @@ import (
 
 type config struct {
 	numTimes int
+	name     string
 	filePath string
 }
 
@@ -27,6 +28,17 @@ func parseArgs(w io.Writer, args []string) (config, error) {
 	fs := flag.NewFlagSet("greeter", flag.ContinueOnError)
 
 	fs.SetOutput(w)
+	fs.Usage = func() {
+		var usgaeString = `
+A greeter application whitch prints the name you entered a specified number of times.
+
+Usage of %s: <option> [name]
+`
+		fmt.Fprintf(w, usgaeString, fs.Name())
+		fmt.Fprintln(w)
+		fmt.Fprintln(w, "Options: ")
+		fs.PrintDefaults()
+	}
 	fs.IntVar(&c.numTimes, "n", 0, "Number of times to greet")
 	fs.StringVar(&c.filePath, "o", "", "Folder path for your HTML file")
 
@@ -35,8 +47,11 @@ func parseArgs(w io.Writer, args []string) (config, error) {
 		return c, err
 	}
 
-	if fs.NArg() != 0 {
-		return c, errPosArgSpecified
+	if fs.NArg() > 1 {
+		return c, errInvalidPosArgSpeccified
+	}
+	if fs.NArg() == 1 {
+		c.name = fs.Arg(0)
 	}
 
 	return c, nil
@@ -58,26 +73,29 @@ func getName(r io.Reader, w io.Writer) (string, error) {
 	return name, nil
 }
 
-func runCmd(r io.Reader, w io.Writer, c config) error {
-	name, err := getName(r, w)
-	if err != nil {
-		return err
+func runCmd(rd io.Reader, w io.Writer, c config) error {
+	var err error
+	if len(c.name) == 0 {
+		c.name, err = getName(rd, w)
+		if err != nil {
+			return err
+		}
 	}
-	greetUser(c, name, w)
-	if c.filePath != "" {
-		createTemplate(c, name)
+	if len(c.filePath) != 0 {
+		createTemplate(c)
 	}
+	greetUser(c, w)
 	return nil
 }
 
-func greetUser(c config, name string, w io.Writer) {
-	msg := fmt.Sprintf("Nite to meet you %s\n", name)
+func greetUser(c config, w io.Writer) {
+	msg := fmt.Sprintf("Nite to meet you %s\n", c.name)
 	for i := 0; i < c.numTimes; i++ {
 		fmt.Fprintf(w, msg)
 	}
 }
 
-func createTemplate(c config, name string) {
+func createTemplate(c config) {
 	file, err := os.Create(c.filePath + "index.html")
 	if err != nil {
 		fmt.Printf("Can`t create file from path: %v\n", c.filePath)
@@ -88,15 +106,15 @@ func createTemplate(c config, name string) {
 		fmt.Printf("Can`t implode name in file.")
 		os.Exit(1)
 	}
-	tmpl.Execute(file, name)
+	tmpl.Execute(file, c.name)
 }
 
-var errPosArgSpecified = errors.New("Positional arguments specified")
+var errInvalidPosArgSpeccified = errors.New("More than one positional argument specified")
 
 func main() {
 	c, err := parseArgs(os.Stdout, os.Args[1:])
 	if err != nil {
-		if errors.Is(err, errPosArgSpecified) {
+		if errors.Is(err, errInvalidPosArgSpeccified) {
 			fmt.Fprintln(os.Stdout, err)
 		}
 		os.Exit(1)
